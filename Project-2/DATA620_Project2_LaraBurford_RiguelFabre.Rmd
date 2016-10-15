@@ -1,0 +1,29 @@
+---
+title: "DATA620_Project2_LBurford_RFabre"
+output: pdf_document
+---
+
+
+```{r}
+
+lines <- readLines("movies.dat") 
+lines <- gsub("::", "~", lines)
+movies <- read.delim(text=lines, sep="~", header=F)
+names(movies) = c("MID","Movie","Genre")
+
+ulines <- readLines("users.dat") 
+ulines <- gsub("::", "~", ulines)
+users <- read.delim(text=ulines, sep="~", header=F)
+names(users) = c("UserID","Sex","Age","Occupation", "Zipcode")
+
+ratings <- read.delim("ratings.dat", sep=":", header=F)
+ratings <- subset(ratings, select = c("V1","V3","V5","V7"))
+names(ratings) = c("UserID","Movie","Rating","Timestamp")
+
+ratings$Movie <- movies[ match(ratings$Movie, movies$MID ) , 'Movie']
+
+write.table(movies, "C:/Users/lburford/Documents/IS620/movies.csv", sep=",", row.names = FALSE)
+write.table(users, "C:/Users/lburford/Documents/IS620/users.csv", sep=",", row.names = FALSE)
+write.table(ratings, "C:/Users/lburford/Documents/IS620/ratings.csv", sep=",", row.names = FALSE)
+
+```
