@@ -9,7 +9,9 @@ output: pdf_document
 lines <- readLines("movies.dat") 
 lines <- gsub("::", "~", lines)
 movies <- read.delim(text=lines, sep="~", header=F)
-names(movies) = c("MID","Movie","Genre")
+names(movies) = c("MovieID","Movie","Genre")
+movies$Movie = as.character(movies$Movie)
+movies$Genre = as.character(movies$Genre)
 
 ulines <- readLines("users.dat") 
 ulines <- gsub("::", "~", ulines)
@@ -18,12 +20,14 @@ names(users) = c("UserID","Sex","Age","Occupation", "Zipcode")
 
 ratings <- read.delim("ratings.dat", sep=":", header=F)
 ratings <- subset(ratings, select = c("V1","V3","V5","V7"))
-names(ratings) = c("UserID","Movie","Rating","Timestamp")
+names(ratings) = c("UserID","MovieID","Rating","Timestamp")
+ratings$Movie <- movies[ match(ratings$MovieID, movies$MovieID ) , 'Movie']
 
-ratings$Movie <- movies[ match(ratings$Movie, movies$MID ) , 'Movie']
+write.table(movies, "C:/Users/lburford/Documents/IS620/movies.csv", 
+            sep=",", row.names = FALSE)
+write.table(users, "C:/Users/lburford/Documents/IS620/users.csv", 
+            sep=",", row.names = FALSE)
+write.table(ratings, "C:/Users/lburford/Documents/IS620/ratings.csv", 
+            sep=",", row.names = FALSE)
 
-write.table(movies, "C:/Users/lburford/Documents/IS620/movies.csv", sep=",", row.names = FALSE)
-write.table(users, "C:/Users/lburford/Documents/IS620/users.csv", sep=",", row.names = FALSE)
-write.table(ratings, "C:/Users/lburford/Documents/IS620/ratings.csv", sep=",", row.names = FALSE)
-
-```
+  ```
