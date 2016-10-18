@@ -17,11 +17,13 @@ ulines <- readLines("users.dat")
 ulines <- gsub("::", "~", ulines)
 users <- read.delim(text=ulines, sep="~", header=F)
 names(users) = c("UserID","Sex","Age","Occupation", "Zipcode")
+users$UserID = sub("^", "U", users$UserID)
 
 ratings <- read.delim("ratings.dat", sep=":", header=F)
 ratings <- subset(ratings, select = c("V1","V3","V5","V7"))
 names(ratings) = c("UserID","MovieID","Rating","Timestamp")
 ratings$Movie <- movies[ match(ratings$MovieID, movies$MovieID ) , 'Movie']
+ratings$UserID = sub("^", "U", ratings$UserID)
 
 write.table(movies, "C:/Users/lburford/Documents/IS620/movies.csv", 
             sep=",", row.names = FALSE)
